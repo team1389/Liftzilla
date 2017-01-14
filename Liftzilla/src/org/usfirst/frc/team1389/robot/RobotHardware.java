@@ -40,8 +40,8 @@ public class RobotHardware extends RobotLayout {
     }
     
     public void initVictor(){
-        leftVictor = new VictorHardware(false, new PWM(9), registry);
-        rightVictor = new VictorHardware(false, new PWM(8), registry);
+        leftVictor = new VictorHardware(false, new PWM(victor_LEFT), registry);
+        rightVictor = new VictorHardware(false, new PWM(victor_RIGHT), registry);
     }
 
     
