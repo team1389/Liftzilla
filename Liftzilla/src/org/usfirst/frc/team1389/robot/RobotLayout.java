@@ -20,8 +20,13 @@ import com.team1389.hardware.registry.Registry;
 public class RobotLayout extends RobotMap {
 	public Registry registry;
 
-	public CANTalonHardware left;
-	public CANTalonHardware right;
+	public CANTalonHardware topLeft;
+	public CANTalonHardware topRight;
+	public CANTalonHardware bottomLeft;
+	public CANTalonHardware bottomRight;
+	
+	public CANTalonGroup leftGroup;
+	public CANTalonGroup rightGroup;
 	
 	public VictorHardware leftVictor;
 	public VictorHardware rightVictor;
