@@ -19,8 +19,9 @@ public class TeleopMain {
 
 	public void init() {
 		controls = ControlBoard.getInstance();
+		Subsystem driveSystem = setUpDriveSystem();
 
-		manager = new SystemManager(/* Add your subsystems here */);
+		manager = new SystemManager(driveSystem);
 		manager.init();
 		DebugDash.getInstance().watch(/* watch any Ohm object! */);
 
