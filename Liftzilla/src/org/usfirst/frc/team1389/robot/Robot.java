@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
 		robot = RobotSoftware.getInstance();
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
-		bot.initDrive();
+		bot.initDriveTrain();
 		bot.initVictor();
 	}
 
@@ -85,9 +85,5 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		DebugDash.getInstance().display();
 	}
-	
-	
-
-	
 
 }

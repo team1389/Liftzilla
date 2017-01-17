@@ -36,9 +36,7 @@ public class RobotHardware extends RobotLayout {
 
 	}
 
-	public void initDrive() {
 
-	}
 
 	public void initVictor() {
 		leftVictor = new VictorHardware(false, new PWM(victor_LEFT), registry);
