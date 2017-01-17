@@ -4,7 +4,9 @@ import org.usfirst.frc.team1389.robot.RobotSoftware;
 import org.usfirst.frc.team1389.robot.controls.ControlBoard;
 import org.usfirst.frc.team1389.watchers.DebugDash;
 
+import com.team1389.system.Subsystem;
 import com.team1389.system.SystemManager;
+import com.team1389.system.drive.TankDriveSystem;
 
 public class TeleopMain {
 	SystemManager manager;
@@ -26,5 +28,9 @@ public class TeleopMain {
 
 	public void periodic() {
 		manager.update();
+	}
+
+	public Subsystem setUpDriveSystem() {
+		return new TankDriveSystem(robot.drive, controls.throttle, controls.wheel);
 	}
 }

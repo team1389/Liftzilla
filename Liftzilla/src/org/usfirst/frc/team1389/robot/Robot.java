@@ -86,10 +86,6 @@ public class Robot extends IterativeRobot {
 		DebugDash.getInstance().display();
 	}
 
-	// TODO Figure out where robot.drive is in rework and apply that to the
-	// DriveSystem here
-	public Subsystem setUpDriveSystem() {
-		return new TankDriveSystem(drive, null, null);
-	}
+	
 
 }
