@@ -6,6 +6,9 @@ import org.usfirst.frc.team1389.watchers.DashboardInput;
 import org.usfirst.frc.team1389.watchers.DebugDash;
 
 import com.team1389.auto.AutoModeExecuter;
+import com.team1389.system.Subsystem;
+import com.team1389.system.drive.DriveOut;
+import com.team1389.system.drive.TankDriveSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -81,6 +84,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		DebugDash.getInstance().display();
+	}
+
+	// TODO Figure out where robot.drive is in rework and apply that to the
+	// DriveSystem here
+	public Subsystem setUpDriveSystem() {
+		return new TankDriveSystem(drive, null, null);
 	}
 
 }
