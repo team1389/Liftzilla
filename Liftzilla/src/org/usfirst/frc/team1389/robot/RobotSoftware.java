@@ -5,7 +5,7 @@ import com.team1389.system.drive.DriveOut;
 
 public class RobotSoftware extends RobotHardware {
 	private static RobotSoftware INSTANCE = new RobotSoftware();
-	public DriveOut<Percent> drive = new DriveOut<Percent>(left.getVoltageOutput(), right.getVoltageOutput());
+	public DriveOut<Percent> drive = new DriveOut<Percent>(leftGroup.getVoltageOutput(), rightGroup.getVoltageOutput());
 
 	public static RobotSoftware getInstance() {
 		return INSTANCE;
