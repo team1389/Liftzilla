@@ -6,9 +6,6 @@ import org.usfirst.frc.team1389.watchers.DashboardInput;
 import org.usfirst.frc.team1389.watchers.DebugDash;
 
 import com.team1389.auto.AutoModeExecuter;
-import com.team1389.system.Subsystem;
-import com.team1389.system.drive.DriveOut;
-import com.team1389.system.drive.TankDriveSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
