@@ -33,18 +33,18 @@ public class RobotHardware extends RobotLayout {
 
 
 
-	public void initVictor() {
-		leftVictor = new VictorHardware(false, new PWM(victor_LEFT), registry);
-		rightVictor = new VictorHardware(false, new PWM(victor_RIGHT), registry);
+	public void initElevator() {
+		elevatorA = new VictorHardware(false, new PWM(victor_LEFT), registry);
+		elevatorB = new VictorHardware(false, new PWM(victor_RIGHT), registry);
 	}
 
 	public void initDriveTrain() {
-		topLeft = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_A), registry);
-		topRight = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_A), registry);
-		bottomLeft = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_B), registry);
-		bottomRight = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_B), registry);
-		leftGroup = new CANTalonGroup(topLeft, bottomLeft);
-		rightGroup = new CANTalonGroup(topRight, bottomRight);
+		leftA = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_A), registry);
+		rightA = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_A), registry);
+		leftB = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_B), registry);
+		rightB = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_B), registry);
+		leftGroup = new CANTalonGroup(leftA, leftB);
+		rightGroup = new CANTalonGroup(rightA, rightB);
 	}
 
 	public Registry getRegistry() {

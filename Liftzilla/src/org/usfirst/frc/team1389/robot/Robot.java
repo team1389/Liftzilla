@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
 		bot.initDriveTrain();
-		bot.initVictor();
+		bot.initElevator();
 	}
 
 	@Override
