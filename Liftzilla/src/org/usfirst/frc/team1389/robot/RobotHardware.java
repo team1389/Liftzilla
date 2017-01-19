@@ -28,17 +28,18 @@ public class RobotHardware extends RobotLayout {
 	protected RobotHardware() {
 		registry = new Registry();
 		navX = new NavXHardware(SPI.Port.kMXP, registry);
-
+		initDriveTrain();
+		initElevator();
 	}
 
 
 
-	public void initElevator() {
+	private void initElevator() {
 		elevatorA = new VictorHardware(false, new PWM(victor_LEFT), registry);
 		elevatorB = new VictorHardware(false, new PWM(victor_RIGHT), registry);
 	}
 
-	public void initDriveTrain() {
+	private void initDriveTrain() {
 		leftA = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_A), registry);
 		rightA = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_A), registry);
 		leftB = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_B), registry);

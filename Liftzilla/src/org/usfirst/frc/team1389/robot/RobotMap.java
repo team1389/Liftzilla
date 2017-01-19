@@ -24,13 +24,13 @@ public class RobotMap {
 	//Outputs
 	
 	//Drivetrain
-	protected static final int can_LEFT_MOTOR_A = 4; protected static final boolean inv_LEFT_MOTOR_A = true;
+	protected static final int can_LEFT_MOTOR_A = 9; protected static final boolean inv_LEFT_MOTOR_A = true;
 	protected static final int can_LEFT_MOTOR_B = 5; protected static final boolean inv_LEFT_MOTOR_B = true;
-	protected static final int can_RIGHT_MOTOR_A = 2; protected static final boolean inv_RIGHT_MOTOR_A = false;
+	protected static final int can_RIGHT_MOTOR_A = 7; protected static final boolean inv_RIGHT_MOTOR_A = false;
 	protected static final int can_RIGHT_MOTOR_B = 1; protected static final boolean inv_RIGHT_MOTOR_B = false;
 	
 	protected static final int victor_LEFT = 9;
-	protected static final int victor_RIGHT = 9;
+	protected static final int victor_RIGHT = 1;
 
 	
 	
