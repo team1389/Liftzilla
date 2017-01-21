@@ -84,6 +84,7 @@
 					<include name="libcscore.so"/>
 					<include name="libopencv_java310.so"/>
 					<include name="libwpilibJavaJNI.so"/>
+					
 				</fileset>
 			</libs.local>
 		</deploy-libs>
@@ -95,8 +96,11 @@
 				</fileset>
 			</libs.local>
 		</deploy-libs>
-
+		<echo>[athena-deploy] ${libDeploy.dir}.</echo>
+		<echo>[athena-deploy] ${username}@${target}:${deploy.dir}.</echo>
 		<echo>[athena-deploy] Copying code over.</echo>
+		<!-- Team 1389 -->
+		<scp file="${teambase}/lib/native/libTalonSRXLib.so" todir="${adminUsername}@${target}:${libDeploy.dir}" password="${password}" trust="true"/>
 		<scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
 
 		<sshexec host="${target}"

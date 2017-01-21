@@ -32,18 +32,16 @@ public class RobotHardware extends RobotLayout {
 		initElevator();
 	}
 
-
-
 	private void initElevator() {
 		elevatorA = new VictorHardware(false, new PWM(victor_LEFT), registry);
 		elevatorB = new VictorHardware(false, new PWM(victor_RIGHT), registry);
 	}
 
 	private void initDriveTrain() {
-		leftA = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_A), registry);
-		rightA = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_A), registry);
-		leftB = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_B), registry);
-		rightB = new CANTalonHardware(false, false, new CAN(can_RIGHT_MOTOR_B), registry);
+		leftA = new CANTalonHardware(false, true, new CAN(can_LEFT_MOTOR_A), registry);
+		rightA = new CANTalonHardware(true, false, new CAN(can_RIGHT_MOTOR_A), registry);
+		leftB = new CANTalonHardware(true, false, new CAN(can_LEFT_MOTOR_B), registry);
+		rightB = new CANTalonHardware(true, false, new CAN(can_RIGHT_MOTOR_B), registry);
 		leftGroup = new CANTalonGroup(leftA, leftB);
 		rightGroup = new CANTalonGroup(rightA, rightB);
 	}
@@ -51,6 +49,5 @@ public class RobotHardware extends RobotLayout {
 	public Registry getRegistry() {
 		return registry;
 	}
-	
 
 }

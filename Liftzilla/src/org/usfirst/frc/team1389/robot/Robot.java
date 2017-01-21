@@ -3,7 +3,6 @@ package org.usfirst.frc.team1389.robot;
 
 import org.usfirst.frc.team1389.operation.TeleopMain;
 import org.usfirst.frc.team1389.watchers.DashboardInput;
-import org.usfirst.frc.team1389.watchers.DebugDash;
 
 import com.team1389.auto.AutoModeExecuter;
 
@@ -44,18 +43,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		DebugDash.getInstance().display();
 	}
 
 	@Override
 	public void disabledPeriodic() {
-		DebugDash.getInstance().display();
 	}
 
 	@Override
 	public void teleopInit() {
 		autoModeExecuter.stop();
-		DebugDash.getInstance().clearWatchers();
 		teleOperator.init();
 	}
 
@@ -65,7 +61,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		teleOperator.periodic();
-		DebugDash.getInstance().display();
 	}
 
 	/**
@@ -77,7 +72,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void testPeriodic() {
-		DebugDash.getInstance().display();
 	}
 
 }

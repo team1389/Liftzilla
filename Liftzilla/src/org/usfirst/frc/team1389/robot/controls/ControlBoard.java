@@ -25,7 +25,7 @@ public class ControlBoard extends ControlMap {
 	private final JoystickHardware manipController = new JoystickHardware(MANIP_CONTROLLER);
 
 	// DRIVER CONTROLS
-	public PercentIn throttle = driveController.getAxis(ax_THROTTLE_AXIS).applyDeadband(.02);
+	public PercentIn throttle = driveController.getAxis(ax_THROTTLE_AXIS).applyDeadband(.02).invert();
 	public PercentIn wheel = driveController.getAxis(ax_WHEEL_AXIS).applyDeadband(.02);
 	public DigitalIn quickTurn = driveController.getButton(btn_QUICK_TURN);
 
