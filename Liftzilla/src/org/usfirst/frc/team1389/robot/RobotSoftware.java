@@ -11,11 +11,11 @@ import com.team1389.trajectory.RobotStateEstimator;
 
 public class RobotSoftware extends RobotHardware {
 	private static RobotSoftware INSTANCE = new RobotSoftware();
-	public DriveOut<Percent> drive = new DriveOut<Percent>(leftGroup.getVoltageOutput(), rightGroup.getVoltageOutput());
-	public AngleIn<Position> angle;
-	public RobotStateEstimator state;
+	public DriveOut<Percent> drive = new DriveOut<Percent>(rightGroup.getVoltageOutput().scale(0.5), leftGroup.getVoltageOutput().scale(0.5));
+//	public AngleIn<Position> angle;
+	//public RobotStateEstimator state;
 
-	public RobotStateEstimator setupRobotStateEstimator() {
+	/*public RobotStateEstimator setupRobotStateEstimator() {
 		RangeIn<Position> left = leftA.getPositionInput().setRange(0, 1440).mapToRange(0,
 				Math.PI * RobotConstants.WheelDiameter);
 		RangeIn<Position> right = rightA.getPositionInput().setRange(0, 1440).mapToRange(0,
@@ -27,14 +27,14 @@ public class RobotSoftware extends RobotHardware {
 		return new RobotStateEstimator(new RobotState(), left, right, leftS, rightS, gyro, RobotConstants.TrackWidth,
 				RobotConstants.TrackLength, RobotConstants.TrackScrub);
 	}
-
+*/
 	public static RobotSoftware getInstance() {
 		return INSTANCE;
 	}
 
 	public RobotSoftware() {
-		angle = navX.getYawInput();
-		state = setupRobotStateEstimator();
+		//angle = navX.getYawInput();
+		//state = setupRobotStateEstimator();
 	}
 
 }
