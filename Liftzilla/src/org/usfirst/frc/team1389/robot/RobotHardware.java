@@ -38,7 +38,7 @@ public class RobotHardware extends RobotLayout {
 	}
 
 	private void initDriveTrain() {
-		leftA = new CANTalonHardware(false, t, new CAN(can_LEFT_MOTOR_A), registry);
+		leftA = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_A), registry);
 		rightA = new CANTalonHardware(true, false, new CAN(can_RIGHT_MOTOR_A), registry);
 		leftB = new CANTalonHardware(false, false, new CAN(can_LEFT_MOTOR_B), registry);
 		rightB = new CANTalonHardware(true, false, new CAN(can_RIGHT_MOTOR_B), registry);
