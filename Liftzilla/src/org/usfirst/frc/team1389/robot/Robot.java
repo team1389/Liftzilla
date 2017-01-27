@@ -5,6 +5,7 @@ import org.usfirst.frc.team1389.operation.TeleopMain;
 import org.usfirst.frc.team1389.watchers.DashboardInput;
 
 import com.team1389.auto.AutoModeExecuter;
+import com.team1389.hardware.inputs.hardware.QuadEncoderHardware;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -20,7 +21,6 @@ public class Robot extends IterativeRobot {
 	TeleopMain teleOperator;
 	AutoModeExecuter autoModeExecuter;
 	
-	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -31,6 +31,7 @@ public class Robot extends IterativeRobot {
 		robot = RobotSoftware.getInstance();
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
+	
 	}
 
 	@Override

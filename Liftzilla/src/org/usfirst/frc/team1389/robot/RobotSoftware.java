@@ -1,18 +1,20 @@
 package org.usfirst.frc.team1389.robot;
 
-import com.team1389.hardware.inputs.software.AngleIn;
 import com.team1389.hardware.inputs.software.RangeIn;
+import com.team1389.hardware.outputs.software.PercentOut;
 import com.team1389.hardware.value_types.Percent;
 import com.team1389.hardware.value_types.Position;
 import com.team1389.hardware.value_types.Speed;
 import com.team1389.system.drive.DriveOut;
-import com.team1389.trajectory.RobotState;
-import com.team1389.trajectory.RobotStateEstimator;
 
 public class RobotSoftware extends RobotHardware {
 	private static RobotSoftware INSTANCE = new RobotSoftware();
 	public DriveOut<Percent> drive = new DriveOut<Percent>(rightGroup.getVoltageOutput().scale(0.5), leftGroup.getVoltageOutput().scale(0.5));
-//	public AngleIn<Position> angle;
+	public RangeIn<Position> elevatorPositionIn = leftB.getPositionInput();
+	public RangeIn<Speed> elevatorSpeedIn = leftB.getSpeedInput();
+	public PercentOut elevatorVoltage = elevatorA.getVoltageOutput().addFollowers(elevatorB.getVoltageOutput());
+	
+	//	public AngleIn<Position> angle;
 	//public RobotStateEstimator state;
 
 	/*public RobotStateEstimator setupRobotStateEstimator() {

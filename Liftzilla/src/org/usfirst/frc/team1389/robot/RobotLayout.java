@@ -29,5 +29,6 @@ public class RobotLayout extends RobotMap {
 	public VictorHardware elevatorB;
 
 	public NavXHardware navX;
+	
 
 }
