@@ -30,6 +30,7 @@ public class TeleopMain {
 		CompletableFuture.runAsync(Watcher::updateWatchers);
 		watcher.outputToDashboard();
 		watcher.watch(robot.rightA.getSpeedInput().getWatchable("rightspeed"));
+		
 		watcher.watch(robot.leftA.getPositionInput().setRange(0,1440).mapToRange(0,4*Math.PI).getWatchable("leftspeed"));
 	}
 

@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1389.robot;
 
 import org.usfirst.frc.team1389.operation.TeleopMain;
+import org.usfirst.frc.team1389.systems.Elevator;
 import org.usfirst.frc.team1389.watchers.DashboardInput;
 
 import com.team1389.auto.AutoModeExecuter;
@@ -19,6 +20,7 @@ public class Robot extends IterativeRobot {
 	RobotSoftware robot;
 	TeleopMain teleOperator;
 	AutoModeExecuter autoModeExecuter;
+	Elevator elevator;
 	
 
 	/**
@@ -30,6 +32,7 @@ public class Robot extends IterativeRobot {
 		robot = RobotSoftware.getInstance();
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
+		elevator = new Elevator(robot.elevatorPositionIn, robot.elevatorSpeedIn, robot.elevatorVoltage, null, robot.topSwitchTriggered, robot.bottomSwitchTriggered);
 	
 	}
 
@@ -53,6 +56,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		elevator.init();
 		autoModeExecuter.stop();
 		teleOperator.init();
 	}
@@ -63,6 +67,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		teleOperator.periodic();
+		elevator.update();
 	}
 
 	/**
