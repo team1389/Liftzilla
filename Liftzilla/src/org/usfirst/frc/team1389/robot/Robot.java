@@ -2,7 +2,6 @@
 package org.usfirst.frc.team1389.robot;
 
 import org.usfirst.frc.team1389.operation.TeleopMain;
-import org.usfirst.frc.team1389.systems.Elevator;
 import org.usfirst.frc.team1389.watchers.DashboardInput;
 
 import com.team1389.auto.AutoModeExecuter;
@@ -64,7 +63,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		teleOperator.periodic();
-		Watcher.updateWatchers();
 	}
 
 	/**

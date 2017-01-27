@@ -32,17 +32,13 @@ public class RobotHardware extends RobotLayout {
 		navX = new NavXHardware(SPI.Port.kMXP, registry);
 		initDriveTrain();
 		initElevator();
-		initSwitches();
-	}
-
-	private void initSwitches() {
-		topSwitch = new SwitchHardware(new DIO(RobotLayout.topSwitchPort), registry);
-		bottomSwitch = new SwitchHardware(true, new DIO(RobotLayout.bottomSwitchPort), registry);
 	}
 
 	private void initElevator() {
 		elevatorA = new VictorHardware(false, new PWM(victor_LEFT), registry);
 		elevatorB = new VictorHardware(false, new PWM(victor_RIGHT), registry);
+		topSwitch = new SwitchHardware(new DIO(RobotLayout.topSwitchPort), registry);
+		bottomSwitch = new SwitchHardware(true, new DIO(RobotLayout.bottomSwitchPort), registry);
 	}
 
 	private void initDriveTrain() {

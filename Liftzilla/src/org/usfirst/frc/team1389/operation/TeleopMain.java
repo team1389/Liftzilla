@@ -17,7 +17,6 @@ public class TeleopMain {
 	SystemManager manager;
 	ControlBoard controls;
 	RobotSoftware robot;
-	Elevator elevator;
 	Watcher watcher;
 
 	public TeleopMain(RobotSoftware robot) {
@@ -35,9 +34,9 @@ public class TeleopMain {
 						buttonMap.new ButtonEnum(controls.armButtonC, Elevator.Height.Halfway),
 								buttonMap.new ButtonEnum(controls.armButtonD, Elevator.Height.ThreeQuarters)/*,
 										buttonMap.new ButtonEnum(null, Elevator.Height.Top)*/);
-		
+		Subsystem elevator = new Elevator(robot.elevatorPositionIn, robot.elevatorSpeedIn, robot.elevatorVoltage, buttonMap, robot.topSwitchTriggered, robot.bottomSwitchTriggered);
+
 		Subsystem driveSystem = setUpDriveSystem();
-		elevator = new Elevator(robot.elevatorPositionIn, robot.elevatorSpeedIn, robot.elevatorVoltage, buttonMap, robot.topSwitchTriggered, robot.bottomSwitchTriggered);
 
 		manager = new SystemManager(driveSystem, elevator);
 		manager.init();

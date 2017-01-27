@@ -77,7 +77,7 @@ public class Elevator extends Subsystem{
 		speedController.setSetpoint(goalSpeed);
 		speedController.update();
 		
-		if(state == ElevatorState.ZeroFindingUp){
+		/*if(state == ElevatorState.ZeroFindingUp){
 			if(topSensor.get()){
 				state = ElevatorState.ZeroFindingDown;
 				encoderTicksTop = elevatorPosition.get();
@@ -98,6 +98,6 @@ public class Elevator extends Subsystem{
 			
 			Height toSet = buttons.getCurrentVal();
 			positionController.setSetpoint(toSet.percentHeight);
-		}
+		}*/
 	}
 }
