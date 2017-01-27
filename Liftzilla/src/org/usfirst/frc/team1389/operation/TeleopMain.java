@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.usfirst.frc.team1389.robot.RobotSoftware;
 import org.usfirst.frc.team1389.robot.controls.ControlBoard;
+import org.usfirst.frc.team1389.systems.Elevator;
 
 import com.team1389.system.Subsystem;
 import com.team1389.system.SystemManager;
@@ -14,24 +15,27 @@ public class TeleopMain {
 	SystemManager manager;
 	ControlBoard controls;
 	RobotSoftware robot;
+	Elevator elevator;
 	Watcher watcher;
 
 	public TeleopMain(RobotSoftware robot) {
 		this.robot = robot;
-		watcher = new Watcher();
 	}
 
 	public void init() {
+		watcher = new Watcher();
+
 		controls = ControlBoard.getInstance();
 		Subsystem driveSystem = setUpDriveSystem();
+		elevator = new Elevator(robot.elevatorPositionIn, robot.elevatorSpeedIn, robot.elevatorVoltage, null, robot.topSwitchTriggered, robot.bottomSwitchTriggered);
 
-		manager = new SystemManager(driveSystem);
+		manager = new SystemManager(driveSystem, elevator);
 		manager.init();
+		
 		CompletableFuture.runAsync(Watcher::updateWatchers);
 		watcher.outputToDashboard();
-		watcher.watch(robot.rightA.getSpeedInput().getWatchable("rightspeed"));
+		watcher.watch(elevator);
 		
-		watcher.watch(robot.leftA.getPositionInput().setRange(0,1440).mapToRange(0,4*Math.PI).getWatchable("leftspeed"));
 	}
 
 	public void periodic() {

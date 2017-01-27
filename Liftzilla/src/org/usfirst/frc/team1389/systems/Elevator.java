@@ -1,15 +1,23 @@
 package org.usfirst.frc.team1389.systems;
 
 import com.team1389.control.SmoothSetController;
+import com.team1389.control.SynchronousPIDController;
 import com.team1389.hardware.inputs.software.DigitalIn;
 import com.team1389.hardware.inputs.software.RangeIn;
 import com.team1389.hardware.outputs.software.PercentOut;
+import com.team1389.hardware.value_types.Percent;
 import com.team1389.hardware.value_types.Position;
 import com.team1389.hardware.value_types.Speed;
 import com.team1389.system.Subsystem;
 import com.team1389.util.AddList;
 import com.team1389.util.ButtonEnumMap;
 import com.team1389.watch.Watchable;
+import com.team1389.watch.Watcher;
+import com.team1389.watch.input.listener.NumberInput;
+import com.team1389.watch.input.stream.DashboardInput;
+import com.team1389.watch.input.stream.DashboardScalarInput;
+
+import edu.wpi.first.wpilibj.SpeedController;
 
 public class Elevator extends Subsystem{
 
@@ -21,6 +29,7 @@ public class Elevator extends Subsystem{
 	private DigitalIn topSensor;
 	private DigitalIn bottomSensor;
 	private SmoothSetController positionController;
+	private SynchronousPIDController<Percent, Speed> speedController;
 	public Elevator(RangeIn<Position> elevatorPosition, RangeIn<Speed> elevatorSpeed, PercentOut voltage, ButtonEnumMap<Height> buttons, DigitalIn topSensor, DigitalIn bottomSensor){
 		this.elevatorPosition = elevatorPosition;
 		this.elevatorSpeed = elevatorSpeed;
@@ -29,6 +38,7 @@ public class Elevator extends Subsystem{
 		this.topSensor = topSensor;
 		this.bottomSensor = bottomSensor;
 		this.positionController = new SmoothSetController(0.01, 0, 0, 0, 0.1, 0.1, 0.4, elevatorPosition, elevatorSpeed, voltage);
+		this.speedController = new SynchronousPIDController<Percent, Speed>(0, 0, 0, 0, elevatorSpeed, voltage);
 	}
 
 	private enum ElevatorState{
@@ -43,10 +53,12 @@ public class Elevator extends Subsystem{
 		}
 	}
 	
+	private double goalSpeed;
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
-		
-		return null;
+		stem.add(speedController.getPIDTuner("Set PID constants"));
+		stem.add(new NumberInput("Input Speed", 0, d -> goalSpeed = d));
+		return stem;
 	}
 
 	@Override
@@ -56,14 +68,14 @@ public class Elevator extends Subsystem{
 
 	@Override
 	public void init() {
-		
 	}
 
 	private double encoderTicksBottom;
 	private double encoderTicksTop;
 	@Override
 	public void update() {
-		voltage.set(0.1);
+		speedController.setSetpoint(goalSpeed);
+		speedController.update();
 		/*if(state == ElevatorState.ZeroFindingUp){
 			if(topSensor.get()){
 				state = ElevatorState.ZeroFindingDown;
