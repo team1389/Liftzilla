@@ -46,7 +46,7 @@ public class Elevator extends Subsystem{
 	}
 	
 	public enum Height{
-		Quarter(0.25), Halfway(0.5), ThreeQuarters(0.75), Top(1);
+		Quarter(0.25), Halfway(0.5), ThreeQuarters(0.75), Top(1), Bottom(0);
 		public final double percentHeight;
 		Height(double percentHeight){
 			this.percentHeight = percentHeight;
@@ -76,23 +76,24 @@ public class Elevator extends Subsystem{
 	public void update() {
 		speedController.setSetpoint(goalSpeed);
 		speedController.update();
-		/*if(state == ElevatorState.ZeroFindingUp){
+		
+		if(state == ElevatorState.ZeroFindingUp){
 			if(topSensor.get()){
 				state = ElevatorState.ZeroFindingDown;
 				encoderTicksTop = elevatorPosition.get();
 			}
-			voltage.set(0.01);
+			speedController.setSetpoint(0.05);
 		}
 		else if(state == ElevatorState.ZeroFindingDown){
 			if(bottomSensor.get()){
 				state = ElevatorState.AcceptingUserInput;
 				encoderTicksTop = elevatorPosition.get();
 			}
-			voltage.set(0);
+			speedController.setSetpoint(0.05);
 		}
 		else{
-			//Height toSet = buttons.getCurrentVal();
-			//positionController.setSetpoint(toSet.percentHeight);
-		}*/
+			Height toSet = buttons.getCurrentVal();
+			positionController.setSetpoint(toSet.percentHeight);
+		}
 	}
 }
