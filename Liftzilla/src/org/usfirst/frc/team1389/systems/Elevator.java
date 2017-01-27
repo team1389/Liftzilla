@@ -88,10 +88,14 @@ public class Elevator extends Subsystem{
 			if(bottomSensor.get()){
 				state = ElevatorState.AcceptingUserInput;
 				encoderTicksTop = elevatorPosition.get();
+				
+				elevatorPosition.setRange(encoderTicksBottom, encoderTicksTop);
+				elevatorPosition.mapToRange(0, 1);
 			}
 			speedController.setSetpoint(0.05);
 		}
 		else{
+			
 			Height toSet = buttons.getCurrentVal();
 			positionController.setSetpoint(toSet.percentHeight);
 		}
