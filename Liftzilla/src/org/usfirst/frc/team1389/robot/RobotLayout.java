@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1389.robot;
 
 import com.team1389.hardware.inputs.hardware.NavXHardware;
+import com.team1389.hardware.inputs.hardware.SwitchHardware;
 import com.team1389.hardware.outputs.hardware.CANTalonGroup;
 import com.team1389.hardware.outputs.hardware.CANTalonHardware;
 import com.team1389.hardware.outputs.hardware.VictorHardware;
@@ -30,5 +31,7 @@ public class RobotLayout extends RobotMap {
 
 	public NavXHardware navX;
 	
+	public SwitchHardware topSwitch;
+	public SwitchHardware bottomSwitch;
 
 }

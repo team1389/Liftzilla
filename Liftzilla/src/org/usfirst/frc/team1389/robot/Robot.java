@@ -19,7 +19,7 @@ public class Robot extends IterativeRobot {
 	RobotSoftware robot;
 	TeleopMain teleOperator;
 	AutoModeExecuter autoModeExecuter;
-	
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -30,7 +30,6 @@ public class Robot extends IterativeRobot {
 		robot = RobotSoftware.getInstance();
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
-	
 	}
 
 	@Override

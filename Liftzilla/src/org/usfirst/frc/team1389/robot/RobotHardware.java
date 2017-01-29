@@ -1,11 +1,13 @@
 package org.usfirst.frc.team1389.robot;
 
 import com.team1389.hardware.inputs.hardware.NavXHardware;
+import com.team1389.hardware.inputs.hardware.SwitchHardware;
 import com.team1389.hardware.outputs.hardware.CANTalonGroup;
 import com.team1389.hardware.outputs.hardware.CANTalonHardware;
 import com.team1389.hardware.outputs.hardware.VictorHardware;
 import com.team1389.hardware.registry.Registry;
 import com.team1389.hardware.registry.port_types.CAN;
+import com.team1389.hardware.registry.port_types.DIO;
 import com.team1389.hardware.registry.port_types.PWM;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -35,6 +37,8 @@ public class RobotHardware extends RobotLayout {
 	private void initElevator() {
 		elevatorA = new VictorHardware(false, new PWM(victor_LEFT), registry);
 		elevatorB = new VictorHardware(false, new PWM(victor_RIGHT), registry);
+		topSwitch = new SwitchHardware(new DIO(RobotLayout.topSwitchPort), registry);
+		bottomSwitch = new SwitchHardware(true, new DIO(RobotLayout.bottomSwitchPort), registry);
 	}
 
 	private void initDriveTrain() {
@@ -49,5 +53,7 @@ public class RobotHardware extends RobotLayout {
 	public Registry getRegistry() {
 		return registry;
 	}
+	
+	
 
 }

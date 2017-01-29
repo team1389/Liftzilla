@@ -29,11 +29,12 @@ public class RobotMap {
 	protected static final int can_RIGHT_MOTOR_A = 5; protected static final boolean inv_RIGHT_MOTOR_A = false;
 	protected static final int can_RIGHT_MOTOR_B = 7; protected static final boolean inv_RIGHT_MOTOR_B = false;
 	
-	protected static final int victor_LEFT = 10;
-	protected static final int victor_RIGHT = 6;
+	protected static final int victor_LEFT = 8;
+	protected static final int victor_RIGHT = 9;
 
 	
-	
+	protected static final int topSwitchPort = 0;
+	protected static final int bottomSwitchPort = 1;
 	
 	
 	
