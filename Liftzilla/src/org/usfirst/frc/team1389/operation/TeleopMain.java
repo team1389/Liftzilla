@@ -7,7 +7,7 @@ import org.usfirst.frc.team1389.robot.controls.ControlBoard;
 
 import com.team1389.system.Subsystem;
 import com.team1389.system.SystemManager;
-import com.team1389.system.drive.CheesyDriveSystem;
+import com.team1389.system.drive.CurvatureDriveSystem;
 import com.team1389.watch.Watcher;
 
 public class TeleopMain {
@@ -27,10 +27,9 @@ public class TeleopMain {
 
 		manager = new SystemManager(driveSystem);
 		manager.init();
+		watcher.watch(driveSystem);
 		CompletableFuture.runAsync(Watcher::updateWatchers);
 		watcher.outputToDashboard();
-		watcher.watch(robot.rightA.getSpeedInput().getWatchable("rightspeed"));
-		watcher.watch(robot.leftA.getPositionInput().setRange(0,1440).mapToRange(0,4*Math.PI).getWatchable("leftspeed"));
 	}
 
 	public void periodic() {
@@ -38,6 +37,6 @@ public class TeleopMain {
 	}
 
 	public Subsystem setUpDriveSystem() {
-		return new CheesyDriveSystem(robot.drive, controls.throttle.scale(0.5), controls.wheel.scale(0.5),controls.quickTurn);
+		return new CurvatureDriveSystem(robot.drive, controls.throttle, controls.wheel, controls.quickTurn);
 	}
 }

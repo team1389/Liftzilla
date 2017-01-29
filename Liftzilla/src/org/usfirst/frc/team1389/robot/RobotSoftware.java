@@ -9,7 +9,7 @@ import com.team1389.system.drive.DriveOut;
 
 public class RobotSoftware extends RobotHardware {
 	private static RobotSoftware INSTANCE = new RobotSoftware();
-	public DriveOut<Percent> drive = new DriveOut<Percent>(rightGroup.getVoltageOutput().scale(0.5), leftGroup.getVoltageOutput().scale(0.5));
+	public DriveOut<Percent> drive = new DriveOut<Percent>(rightGroup.getVoltageOutput(), leftGroup.getVoltageOutput());
 	public RangeIn<Position> elevatorPositionIn = leftB.getPositionInput();
 	public RangeIn<Speed> elevatorSpeedIn = leftB.getSpeedInput();
 	public PercentOut elevatorVoltage = elevatorA.getVoltageOutput().addFollowers(elevatorB.getVoltageOutput());
