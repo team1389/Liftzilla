@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1389.robot;
 
+import com.team1389.configuration.PIDConstants;
+
 public class RobotConstants {
 	public static final double INCHES_TO_METERS = .0254;
 
@@ -18,5 +20,8 @@ public class RobotConstants {
 	public static final double MaxVelocity = 22; // m/s
 	public static final double MaxAcceleration = 22; // m/s^2
 	public static final double MaxDeceleration = 22; // m/s^2
+
+	public static final PIDConstants ElevatorUpPID = new PIDConstants(.0004, 0, .0001, .001);
+	public static final PIDConstants ElevatorDownPID = new PIDConstants(4E-4, .00001, 2.5E-4, .0005);
 
 }
