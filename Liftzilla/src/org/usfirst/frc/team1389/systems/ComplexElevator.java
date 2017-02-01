@@ -52,10 +52,11 @@ public class ComplexElevator extends Subsystem {
 	}
 
 	public void initZeroMode() {
-		scheduler.schedule(CommandUtil.combineSequential(new ZeroDown(600), new ZeroUp(600), CommandUtil.createCommand(() -> {
-			elevatorPID.setSetpoint(0);
-			return true;
-		})));
+		scheduler.schedule(
+				CommandUtil.combineSequential(new ZeroDown(-600), new ZeroUp(600), CommandUtil.createCommand(() -> {
+					elevatorPID.setSetpoint(0);
+					return true;
+				})));
 	}
 
 	@Override
@@ -64,13 +65,17 @@ public class ComplexElevator extends Subsystem {
 		scheduler.update();
 	}
 
-	private class ZeroUp (int setpoint) extends Command {
+	private class ZeroUp extends Command{
+
+		public ZeroUp(int upSetpoint) {
+			// TODO Auto-generated constructor stub
+		}
+		@Override
 		public void initialize() {
 			System.out.println("zeroing up");
 			elevatorSpeedSetter.set(600);
 			elevatorPID.setPID(RobotConstants.ElevatorUpPID);
 		}
-
 		@Override
 		protected boolean execute() {
 			return topSwitch.get();
@@ -78,7 +83,10 @@ public class ComplexElevator extends Subsystem {
 
 	}
 
-	private class ZeroDown(int setpoint) extends Command {
+	private class ZeroDown extends Command {
+		public ZeroDown(int downSetpoint) {
+		}
+
 		@Override
 		public void initialize() {
 			System.out.println("zeroing down");
@@ -90,6 +98,5 @@ public class ComplexElevator extends Subsystem {
 		protected boolean execute() {
 			return botSwitch.get();
 		}
-
 	}
 }
