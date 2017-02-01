@@ -52,7 +52,7 @@ public class ComplexElevator extends Subsystem {
 	}
 
 	public void initZeroMode() {
-		scheduler.schedule(CommandUtil.combineSequential(new ZeroDown(), new ZeroUp(), CommandUtil.createCommand(() -> {
+		scheduler.schedule(CommandUtil.combineSequential(new ZeroDown(600), new ZeroUp(600), CommandUtil.createCommand(() -> {
 			elevatorPID.setSetpoint(0);
 			return true;
 		})));
@@ -64,8 +64,7 @@ public class ComplexElevator extends Subsystem {
 		scheduler.update();
 	}
 
-	private class ZeroUp extends Command {
-		@Override
+	private class ZeroUp (int setpoint) extends Command {
 		public void initialize() {
 			System.out.println("zeroing up");
 			elevatorSpeedSetter.set(600);
@@ -79,7 +78,7 @@ public class ComplexElevator extends Subsystem {
 
 	}
 
-	private class ZeroDown extends Command {
+	private class ZeroDown(int setpoint) extends Command {
 		@Override
 		public void initialize() {
 			System.out.println("zeroing down");
