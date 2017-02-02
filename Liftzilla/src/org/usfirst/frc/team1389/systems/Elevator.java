@@ -75,7 +75,7 @@ public class Elevator extends Subsystem {
 	private double encoderTicksTop;
 
 	@Override
-	public void update() {
+	public void updateTeleop() {
 		System.out.println(goalSpeed);
 		speedController.setSetpoint(goalSpeed);
 		speedController.update();

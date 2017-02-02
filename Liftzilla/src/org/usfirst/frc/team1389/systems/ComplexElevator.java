@@ -23,6 +23,7 @@ public class ComplexElevator extends Subsystem {
 	private DigitalIn topSwitch, botSwitch;
 	private RangeIn<Position> elevatorPos;
 	private CommandScheduler scheduler;
+	private double elevatorPositionSetpoint;
 	private double topPos, botPos;
 
 	public ComplexElevator(PercentOut elevatorVoltage, RangeIn<Speed> elevatorSpeed, RangeIn<Position> elevatorPos,
@@ -35,11 +36,11 @@ public class ComplexElevator extends Subsystem {
 		this.elevatorPos = elevatorPos;
 		this.scheduler = new CommandScheduler();
 	}
-
+	
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
 		return stem.put(elevatorSpeedSetter.getWatchable("lastSetSpeed"), elevatorPID.getSource().getWatchable("speed"),
-				elevatorPID.getOutput().getWatchable("lastSetVoltage"), scheduler);
+				elevatorPID.getOutput().getWatchable("lastSetVoltage"), scheduler,elevatorPos.getWatchable("pos"));
 	}
 
 	@Override
@@ -63,12 +64,16 @@ public class ComplexElevator extends Subsystem {
 	}
 
 	@Override
-	public void update() {
+	public void updateTeleop() {
+		// elevator.setSetpoint(elevatorPositionSetpoint)
 		elevatorPID.update();
 		scheduler.update();
 	}
 
-	private class StopElevator extends Command {
+	public void setPositionSetpoint(double setpoint) {
+		elevatorPositionSetpoint = setpoint;
+	}
+	public class StopElevator extends Command {
 
 		@Override
 		public void initialize() {
