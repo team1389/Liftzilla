@@ -1,10 +1,15 @@
 package org.usfirst.frc.team1389.systems;
 
+import org.usfirst.frc.team1389.robot.RobotConstants;
+
+import com.team1389.command_framework.CommandUtil;
+import com.team1389.command_framework.command_base.Command;
 import com.team1389.control.SmoothSetController;
 import com.team1389.control.SynchronousPIDController;
 import com.team1389.hardware.inputs.software.DigitalIn;
 import com.team1389.hardware.inputs.software.RangeIn;
 import com.team1389.hardware.outputs.software.PercentOut;
+import com.team1389.hardware.outputs.software.RangeOut;
 import com.team1389.hardware.value_types.Percent;
 import com.team1389.hardware.value_types.Position;
 import com.team1389.hardware.value_types.Speed;
@@ -12,82 +17,143 @@ import com.team1389.system.Subsystem;
 import com.team1389.util.ButtonEnumMap;
 import com.team1389.util.list.AddList;
 import com.team1389.watch.Watchable;
-import com.team1389.watch.input.listener.NumberInput;
 
 public class Elevator extends Subsystem {
+	private RangeOut<Speed> elevatorSpeedSetter;
+	private SynchronousPIDController<Percent, Speed> elevatorPID;
+	private DigitalIn topSwitch, botSwitch, zero;
+	private RangeIn<Position> elevatorPos;
+	private ButtonEnumMap<Height> heightmap;
+	private SynchronousPIDController<Percent, Position> controller;
+	private SmoothSetController smoothSetController;
+	private double elevatorPositionSetpoint;
+	private double topPos, botPos;
 
-	private RangeIn<Position> elevatorPosition;
-	private RangeIn<Speed> elevatorSpeed;
-	private PercentOut voltage;
-	private ButtonEnumMap<Height> buttons;
-	private ElevatorState state = ElevatorState.ZeroFindingUp;
-	private DigitalIn topSensor;
-	private DigitalIn bottomSensor;
-	private SmoothSetController positionController;
-	private SynchronousPIDController<Percent, Speed> speedController;
+	public Elevator(PercentOut elevatorVoltage, RangeIn<Speed> elevatorSpeed, RangeIn<Position> elevatorPos,
+			DigitalIn top, DigitalIn bottom, DigitalIn zero, ButtonEnumMap<Height> heightmap) {
+		PercentOut voltage = elevatorVoltage.copy().offset(.15);
+		elevatorPID = new SynchronousPIDController<>(RobotConstants.ElevatorSpeedPID, elevatorSpeed, voltage);
+		elevatorPID.setInputRange(-2000, 2000);
+		elevatorSpeedSetter = elevatorPID.getSetpointSetter();
+		this.topSwitch = top;
+		this.smoothSetController = new SmoothSetController(RobotConstants.ElevatorSmoothSetPID,
+				RobotConstants.ElevatorMaxAccel, RobotConstants.ElevatorMaxAccel, RobotConstants.ElevatorMaxVel,
+				elevatorPos, elevatorSpeed.copy().mapToRange(0, 1).scale(Math.PI * 2.25), voltage);
+		this.botSwitch = bottom;
+		this.elevatorPos = elevatorPos;
+		this.heightmap = heightmap;
+		this.zero = zero;
 
-	public Elevator(RangeIn<Position> elevatorPosition, RangeIn<Speed> elevatorSpeed, PercentOut voltage,
-			ButtonEnumMap<Height> buttons, DigitalIn topSensor, DigitalIn bottomSensor) {
-		this.elevatorPosition = elevatorPosition;
-		this.elevatorSpeed = elevatorSpeed;
-		this.voltage = voltage;
-		this.buttons = buttons;
-		this.topSensor = topSensor;
-		this.bottomSensor = bottomSensor;
-		this.positionController = new SmoothSetController(0.01, 0, 0, 0, 0.1, 0.1, 0.4, elevatorPosition, elevatorSpeed,
-				voltage);
-		this.speedController = new SynchronousPIDController<Percent, Speed>(0, 0, 0, 0, elevatorSpeed, voltage);
-	}
-
-	private enum ElevatorState {
-		ZeroFindingUp, ZeroFindingDown, AcceptingUserInput;
+		controller = new SynchronousPIDController<>(RobotConstants.ElevatorSmoothSetPID, elevatorPos, voltage);
 	}
 
 	public enum Height {
-		Quarter(0.25), Halfway(0.5), ThreeQuarters(0.75), Top(1), Bottom(0);
-		public final double percentHeight;
+		BOTTOM(0), ONE_TOTE(13.75), TWO_TOTE(25.75);
+		public final double height;
 
-		Height(double percentHeight) {
-			this.percentHeight = percentHeight;
+		private Height(double height) {
+			this.height = height;
 		}
 	}
 
-	private double goalSpeed;
-
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
-		stem.add(speedController.getPIDTuner("Set PID constants"));
-		stem.add(new NumberInput("Input Speed", 0, d -> goalSpeed = d));
-		stem.add(voltage.getWatchable("volts"));
-		return stem;
+		return stem.put(elevatorSpeedSetter.getWatchable("lastSetSpeed"), elevatorPID.getSource().getWatchable("speed"),
+				elevatorPID.getOutput().getWatchable("lastSetVoltage"), getScheduler(), elevatorPos.getWatchable("pos"),
+				heightmap.getWatchable("height"), smoothSetController.getPIDTunerWithSetpoint("speedPID"));
 	}
 
 	@Override
 	public String getName() {
-		return new String("Elevator");
+		return "elevatorComp";
 	}
 
 	@Override
 	public void init() {
+		initZeroMode();
 	}
 
-	private double encoderTicksBottom;
-	private double encoderTicksTop;
+	public void initZeroMode() {
+		Command gatherRangeData = CommandUtil.createCommand(() -> {
+			System.out.println("Endstops hit: [" + botPos + "," + topPos + "]");
+			elevatorPos.adjustRange(botPos, topPos, 0, RobotConstants.ElevatorHeightInches);
+			return true;
+		});
+		schedule(CommandUtil.combineSequential(new ZeroDown(), new ZeroUp(), gatherRangeData, new StopElevator()));
+	}
 
 	@Override
 	public void updateTeleop() {
-		System.out.println(goalSpeed);
-		speedController.setSetpoint(goalSpeed);
-		speedController.update();
 
-		/*
-		 * if(state == ElevatorState.ZeroFindingUp){ if(topSensor.get()){ state =
-		 * ElevatorState.ZeroFindingDown; encoderTicksTop = elevatorPosition.get(); }
-		 * speedController.setSetpoint(0.05); } else if(state == ElevatorState.ZeroFindingDown){
-		 * if(bottomSensor.get()){ state = ElevatorState.AcceptingUserInput; encoderTicksTop =
-		 * elevatorPosition.get(); elevatorPosition.setRange(encoderTicksBottom, encoderTicksTop);
-		 * elevatorPosition.mapToRange(0, 1); } speedController.setSetpoint(0.05); } else{ Height
-		 * toSet = buttons.getCurrentVal(); positionController.setSetpoint(toSet.percentHeight); }
-		 */
+		if (getScheduler().isFinished()) {
+			smoothSetController.update();
+			// elevatorPositionSetpoint = heightmap.getVal().height;
+			// controller.setSetpoint(elevatorPositionSetpoint);
+			if (zero.get()) {
+				initZeroMode();
+			}
+		} else {
+			elevatorPID.update();
+		}
+	}
+
+	public void setPositionSetpoint(double setpoint) {
+		elevatorPositionSetpoint = setpoint;
+	}
+
+	public class StopElevator extends Command {
+
+		@Override
+		public void initialize() {
+			System.out.println("stopping elevator");
+			elevatorSpeedSetter.set(0.0);
+		}
+
+		@Override
+		protected boolean execute() {
+			elevatorPID.update();
+			return elevatorPID.onTarget(.01);
+		}
+
+	}
+
+	private static final double zeroSpeedRPM = 1000;
+
+	private class ZeroUp extends Command {
+
+		@Override
+		public void initialize() {
+			System.out.println("elevator zeroing up");
+			elevatorSpeedSetter.set(zeroSpeedRPM);
+		}
+
+		@Override
+		protected boolean execute() {
+			return topSwitch.get();
+		}
+
+		@Override
+		protected void done() {
+			topPos = elevatorPos.get();
+		}
+
+	}
+
+	private class ZeroDown extends Command {
+		@Override
+		public void initialize() {
+			System.out.println("elevator zeroing down");
+			elevatorSpeedSetter.set(-zeroSpeedRPM);
+		}
+
+		@Override
+		protected boolean execute() {
+			return botSwitch.get();
+		}
+
+		@Override
+		protected void done() {
+			botPos = elevatorPos.get();
+		}
 	}
 }

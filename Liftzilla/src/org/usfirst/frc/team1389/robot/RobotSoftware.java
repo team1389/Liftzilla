@@ -13,7 +13,7 @@ public class RobotSoftware extends RobotHardware {
 			leftGroup.getVoltageOutput());
 	public final RangeIn<Position> elevatorPositionIn = rightB.getPositionInput();
 	public final RangeIn<Speed> elevatorSpeedIn = rightB.getSpeedInput();
-	public final PercentOut elevatorVoltage = elevatorA.getVoltageOutput().addFollowers(elevatorB.getVoltageOutput());
+	public final PercentOut elevatorVoltage = elevatorA.getVoltageOutput().addFollowers(elevatorB.getVoltageOutput().invert());
 	// public AngleIn<Position> angle;
 	// public RobotStateEstimator state;
 

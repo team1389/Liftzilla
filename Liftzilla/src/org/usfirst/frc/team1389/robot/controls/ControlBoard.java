@@ -2,7 +2,6 @@ package org.usfirst.frc.team1389.robot.controls;
 
 import com.team1389.hardware.inputs.hardware.JoystickHardware;
 import com.team1389.hardware.inputs.software.DigitalIn;
-import com.team1389.hardware.inputs.software.DigitalIn.InputFilter;
 import com.team1389.hardware.inputs.software.PercentIn;
 
 /**
@@ -32,13 +31,8 @@ public class ControlBoard extends ControlMap {
 	public DigitalIn quickTurn = driveController.getButton(btn_QUICK_TURN);
 
 	// MANIPULATOR CONTROLS
-	public DigitalIn armButtonA = manipController.getButton(btn_ARM_POSITION_A).getLatched();
-	public DigitalIn armButtonB = manipController.getButton(btn_ARM_POSITION_B).getLatched();
-	public DigitalIn armButtonC = manipController.getButton(btn_ARM_POSITION_C).getLatched();
-	public DigitalIn armButtonD = manipController.getButton(btn_ARM_POSITION_D).getLatched();
-
-	public DigitalIn turretZero = manipController.getButton(btn_TURRET_ZERO, InputFilter.LATCHED);
-	public PercentIn turretAxis = manipController.getAxis(ax_TURRET_AXIS);
-	public PercentIn liftAxis = manipController.getAxis(ax_INTAKE_AXIS).invert();
-	public DigitalIn intakeOverride = manipController.getButton(btn_INTAKE_MANUAL_OVERRIDE);
+	public DigitalIn elevatorDown = manipController.getButton(btn_ELEVATOR_DOWN).getLatched();
+	public DigitalIn elevatorOne = manipController.getButton(btn_ELEVATOR_ONE).getLatched();
+	public DigitalIn elevatorTwo = manipController.getButton(btn_ELEVATOR_TWO).getLatched();
+	public DigitalIn elevatorZero = manipController.getButton(btn_ELEVATOR_ZERO).getLatched();
 }
