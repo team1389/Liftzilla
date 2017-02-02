@@ -23,11 +23,12 @@ public class ComplexElevator extends Subsystem {
 	private DigitalIn topSwitch, botSwitch;
 	private RangeIn<Position> elevatorPos;
 	private CommandScheduler scheduler;
+	private double topPos, botPos;
 
 	public ComplexElevator(PercentOut elevatorVoltage, RangeIn<Speed> elevatorSpeed, RangeIn<Position> elevatorPos,
 			DigitalIn top, DigitalIn bottom) {
 		elevatorPID = new SynchronousPIDController<>(RobotConstants.ElevatorUpPID, elevatorSpeed, elevatorVoltage);
-		elevatorPID.setInputRange(-1000, 1000);
+		elevatorPID.setInputRange(-2000, 2000);
 		elevatorSpeedSetter = elevatorPID.getSetpointSetter();
 		this.topSwitch = top;
 		this.botSwitch = bottom;
@@ -52,11 +53,13 @@ public class ComplexElevator extends Subsystem {
 	}
 
 	public void initZeroMode() {
+		Command gatherRangeData = CommandUtil.createCommand(() -> {
+			System.out.println("Endstops hit: [" + botPos + "," + topPos + "]");
+			elevatorPos.adjustRange(botPos, topPos, 0, 1);
+			return true;
+		});
 		scheduler.schedule(
-				CommandUtil.combineSequential(new ZeroDown(-600), new ZeroUp(600), CommandUtil.createCommand(() -> {
-					elevatorPID.setSetpoint(0);
-					return true;
-				})));
+				CommandUtil.combineSequential(new ZeroDown(), new ZeroUp(), gatherRangeData, new StopElevator()));
 	}
 
 	@Override
@@ -65,38 +68,61 @@ public class ComplexElevator extends Subsystem {
 		scheduler.update();
 	}
 
-	private class ZeroUp extends Command{
+	private class StopElevator extends Command {
 
-		public ZeroUp(int upSetpoint) {
-			// TODO Auto-generated constructor stub
-		}
 		@Override
 		public void initialize() {
-			System.out.println("zeroing up");
-			elevatorSpeedSetter.set(600);
+			System.out.println("stopping elevator");
+			elevatorSpeedSetter.set(0.0);
+		}
+
+		@Override
+		protected boolean execute() {
+			elevatorPID.update();
+			return elevatorPID.onTarget(.01);
+		}
+
+	}
+
+	private static final double zeroSpeedRPM = 1000;
+
+	private class ZeroUp extends Command {
+
+		@Override
+		public void initialize() {
+			System.out.println("elevator zeroing up");
+			elevatorSpeedSetter.set(zeroSpeedRPM);
 			elevatorPID.setPID(RobotConstants.ElevatorUpPID);
 		}
+
 		@Override
 		protected boolean execute() {
 			return topSwitch.get();
 		}
 
+		@Override
+		protected void done() {
+			topPos = elevatorPos.get();
+		}
+
 	}
 
 	private class ZeroDown extends Command {
-		public ZeroDown(int downSetpoint) {
-		}
-
 		@Override
 		public void initialize() {
-			System.out.println("zeroing down");
-			elevatorSpeedSetter.set(-600);
+			System.out.println("elevator zeroing down");
+			elevatorSpeedSetter.set(-zeroSpeedRPM);
 			elevatorPID.setPID(RobotConstants.ElevatorDownPID);
 		}
 
 		@Override
 		protected boolean execute() {
 			return botSwitch.get();
+		}
+
+		@Override
+		protected void done() {
+			botPos = elevatorPos.get();
 		}
 	}
 }
