@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1389.robot;
 
+import com.team1389.hardware.inputs.hardware.AnalogUltrasonicHardware;
 import com.team1389.hardware.inputs.hardware.PDPHardware;
 import com.team1389.hardware.inputs.hardware.SwitchHardware;
 import com.team1389.hardware.outputs.hardware.CANTalonGroup;
@@ -22,6 +23,7 @@ public class RobotLayout extends RobotMap {
 	public CANTalonHardware rightA;
 	public CANTalonHardware leftB;
 	public CANTalonHardware rightB;
+	public AnalogUltrasonicHardware ultrasonic;
 	
 	public CANTalonGroup leftGroup;
 	public CANTalonGroup rightGroup;

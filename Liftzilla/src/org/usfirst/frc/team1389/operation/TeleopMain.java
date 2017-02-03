@@ -6,6 +6,7 @@ import org.usfirst.frc.team1389.robot.RobotSoftware;
 import org.usfirst.frc.team1389.robot.controls.ControlBoard;
 import org.usfirst.frc.team1389.systems.Elevator;
 import org.usfirst.frc.team1389.systems.Elevator.Height;
+import org.usfirst.frc.team1389.systems.TestSystem;
 
 import com.team1389.hardware.inputs.software.DigitalIn;
 import com.team1389.system.Subsystem;
@@ -28,11 +29,12 @@ public class TeleopMain {
 	public void init() {
 		watcher = new Watcher();
 		controls = ControlBoard.getInstance();
-		Subsystem driveSystem = setUpDriveSystem();
+		//Subsystem driveSystem = setUpDriveSystem();
+		Subsystem testUltra = new TestSystem(robot.ultrasonic, robot.leftA.getPositionInput(), robot.rightA.getPositionInput(), robot.leftA.getSpeedInput(), robot.rightA.getSpeedInput(), robot.leftGroup.getVoltageOutput(), robot.rightGroup.getVoltageOutput(), 30);
 		Subsystem elevator = setupComplexElevator();
-		manager = new SystemManager(elevator, driveSystem);
+		manager = new SystemManager(elevator, testUltra);
 		manager.init();
-		watcher.watch(elevator, driveSystem, robot.topSwitch, robot.bottomSwitch);
+		watcher.watch(elevator, testUltra, robot.topSwitch, robot.bottomSwitch);
 		CompletableFuture.runAsync(Watcher::updateWatchers);
 		watcher.outputToDashboard();
 

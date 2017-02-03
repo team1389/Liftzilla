@@ -28,6 +28,7 @@ public class RobotMap {
 	protected static final int can_LEFT_MOTOR_B = 1; protected static final boolean inv_LEFT_MOTOR_B = true;
 	protected static final int can_RIGHT_MOTOR_A = 5; protected static final boolean inv_RIGHT_MOTOR_A = false;
 	protected static final int can_RIGHT_MOTOR_B = 7; protected static final boolean inv_RIGHT_MOTOR_B = false;
+	protected static final int ultrasonicPort = 3;
 	
 	protected static final int victor_LEFT = 8;
 	protected static final int victor_RIGHT = 9;
