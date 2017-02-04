@@ -31,10 +31,10 @@ public class TeleopMain {
 		controls = ControlBoard.getInstance();
 		//Subsystem driveSystem = setUpDriveSystem();
 		Subsystem testUltra = new TestSystem(robot.ultrasonic, robot.leftA.getPositionInput(), robot.rightA.getPositionInput(), robot.leftA.getSpeedInput(), robot.rightA.getSpeedInput(), robot.leftGroup.getVoltageOutput(), robot.rightGroup.getVoltageOutput(), 30);
-		Subsystem elevator = setupComplexElevator();
-		manager = new SystemManager(elevator, testUltra);
+		//Subsystem elevator = setupComplexElevator();
+		manager = new SystemManager(testUltra);
 		manager.init();
-		watcher.watch(elevator, testUltra, robot.topSwitch, robot.bottomSwitch);
+		watcher.watch(testUltra, robot.topSwitch, robot.bottomSwitch);
 		CompletableFuture.runAsync(Watcher::updateWatchers);
 		watcher.outputToDashboard();
 

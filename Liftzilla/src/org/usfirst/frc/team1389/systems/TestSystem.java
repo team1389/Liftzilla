@@ -12,17 +12,18 @@ import com.team1389.watch.Watchable;
 public class TestSystem extends Subsystem{
 
 	UltrasonicMaintainDistance ultraMaintainDistance;
+	AnalogUltrasonicHardware ultrasonic;
 	public TestSystem(AnalogUltrasonicHardware ultrasonic, 
 			PositionEncoderIn positionLeft, PositionEncoderIn positionRight,  
 			RangeIn<Speed> velLeft, RangeIn<Speed> velRight, 
 			PercentOut outputLeft, PercentOut outputRight, double distance){
+		this.ultrasonic = ultrasonic;
 		ultraMaintainDistance = new UltrasonicMaintainDistance(ultrasonic, positionRight, positionRight, velRight, velRight, outputRight, outputRight, distance);
 	}
 	
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
-		stem.add(ultraMaintainDistance.getPidTuner());
-		return stem;
+		return stem.put(ultraMaintainDistance.getPidTuner(), ultrasonic.getDistanceIn().getWatchable("Ultrasonic in centimeters"));
 	}
 
 	@Override

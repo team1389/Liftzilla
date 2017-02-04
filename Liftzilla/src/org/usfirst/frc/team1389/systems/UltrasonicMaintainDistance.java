@@ -13,6 +13,7 @@ import com.team1389.hardware.inputs.software.RangeIn;
 import com.team1389.hardware.outputs.software.PercentOut;
 import com.team1389.hardware.value_types.Position;
 import com.team1389.hardware.value_types.Speed;
+import com.team1389.util.unit_conversion.dimensions.DistanceUnit;
 import com.team1389.watch.CompositeWatchable;
 
 public class UltrasonicMaintainDistance extends Command{
@@ -21,7 +22,7 @@ public class UltrasonicMaintainDistance extends Command{
 	private SmoothSetController controllerLeft;
 	private SmoothSetController controllerRight;
 	private AnalogUltrasonicHardware ultrasonic;
-	private double inches = 0; //This might need to be synchronized
+	private double centimeters = 0; //This might need to be synchronized
 	private double goalDistance = 0;
 	public UltrasonicMaintainDistance(AnalogUltrasonicHardware ultrasonic, 
 			PositionEncoderIn positionLeft, PositionEncoderIn positionRight,  
@@ -29,13 +30,11 @@ public class UltrasonicMaintainDistance extends Command{
 			PercentOut outputLeft, PercentOut outputRight, double distance){
 		
 		this.goalDistance  = distance;
-		controllerLeft = new SmoothSetController(new PIDConstants(0.1,0,0),0.1, 0.1, 0.5, positionLeft.getInches(), velLeft, outputLeft);
-		controllerRight = new SmoothSetController(new PIDConstants(0.1,0,0),0.1, 0.1, 0.5, positionRight.getInches(), velRight, outputRight);
+		PIDConstants defaultPID = new PIDConstants(0,0,0,0);
+		controllerLeft = new SmoothSetController(defaultPID, 10, 10, 50, positionLeft.convertValuesTo(DistanceUnit.Centimeters), velLeft.mapToRange(0, 1).scale(100).scale(Math.PI * 6), outputLeft);
+		controllerRight = new SmoothSetController(defaultPID, 10, 10, 50, positionRight.convertValuesTo(DistanceUnit.Centimeters), velRight.mapToRange(0, 1).scale(100).scale(Math.PI * 6), outputRight);
 		this.ultrasonic = ultrasonic;
 		
-		CompositeWatchable.of("Ultrasonic Tuner", new PIDInput("Ultrasonic Tuner", new PIDConstants(0,0,0,0), true, 
-				(PIDConstants constants) -> {controllerLeft.setPID(constants); controllerRight.setPID(constants);}
-				).getSubWatchables(CompositeWatchable.makeStem()));
 		
 		CompletableFuture.runAsync(() -> CommandUtil.executeCommand(new ultrasonicSetterAndGetter(), 20));
 	}
@@ -44,9 +43,10 @@ public class UltrasonicMaintainDistance extends Command{
 		RangeIn<Position> distanceStream = ultrasonic.getDistanceIn();
 		@Override
 		protected boolean execute() {
-			inches = distanceStream.get();
+			centimeters = distanceStream.get();
 			return false;
 		}
+		//TODO: close on command end
 		
 	}
 	
@@ -59,18 +59,16 @@ public class UltrasonicMaintainDistance extends Command{
 	@Override
 	protected boolean execute() {
 		if(goalDistance != controllerLeft.getError()){
-			controllerLeft.setSetpoint(inches /*Need conversion*/ - controllerLeft.getError());
+			controllerLeft.setSetpoint(centimeters);
 		}
 		if(goalDistance != controllerRight.getError()){
-			controllerRight.setSetpoint(inches /*Need conversion*/ - controllerRight.getError());
+			controllerRight.setSetpoint(centimeters);
 		}
-		return end;
+		controllerLeft.update();
+		controllerRight.update();
+		return false;
 	}
-	
-	boolean end = false;
-	public void end(){
-		end = true;
-	}
+
 	
 
 
