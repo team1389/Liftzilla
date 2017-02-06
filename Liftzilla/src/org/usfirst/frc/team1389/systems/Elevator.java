@@ -83,7 +83,7 @@ public class Elevator extends Subsystem {
 	}
 
 	@Override
-	public void updateTeleop() {
+	public void update() {
 
 		if (getScheduler().isFinished()) {
 			smoothSetController.update();

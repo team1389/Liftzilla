@@ -42,7 +42,7 @@ public class VoltageElevator extends Subsystem {
 	}
 
 	@Override
-	public void updateTeleop() {
+	public void update() {
 		elevatorMotors.set(joyVal.get());
 	}
 
