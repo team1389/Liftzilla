@@ -26,18 +26,22 @@ public class RobotMap {
 	// Drivetrain
 	protected static final CAN can_LEFT_MOTOR_A = new CAN(9);
 	protected static final boolean inv_LEFT_MOTOR_A = true;
-	protected static final CAN can_LEFT_MOTOR_B = new CAN(1);
-	protected static final boolean inv_LEFT_MOTOR_B = true;
-	protected static final CAN can_RIGHT_MOTOR_A = new CAN(5);
+	protected static final CAN can_LEFT_MOTOR_B = new CAN(5);
+	protected static final boolean inv_LEFT_MOTOR_B = false;
+	protected static final CAN can_RIGHT_MOTOR_A = new CAN(1);
 	protected static final boolean inv_RIGHT_MOTOR_A = true;
 	protected static final CAN can_RIGHT_MOTOR_B = new CAN(7);
 	protected static final boolean inv_RIGHT_MOTOR_B = true;
 
 	protected static final PWM pwm_ELEVATOR_LEFT = new PWM(8);
 	protected static final PWM pwm_ELEVATOR_RIGHT = new PWM(9);
+	protected static final boolean inv_ELEVATOR_LEFT = false;
+	protected static final boolean inv_ELEVATOR_RIGHT = false;
 
 	protected static final DIO dio_TOP_LIMIT = new DIO(0);
 	protected static final DIO dio_BOTTOM_LIMIT = new DIO(1);
+	protected static final boolean inv_TOP_LIMIT = false;
+	protected static final boolean inv_BOTTOM_LIMIT = true;
 
 	protected static final boolean sinv_LEFT_ENCODER = true;
 	protected static final boolean sinv_RIGHT_ENCODER = false;
