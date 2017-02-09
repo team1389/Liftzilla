@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1389.operation;
 
-import java.util.concurrent.CompletableFuture;
-
 import org.usfirst.frc.team1389.robot.RobotSoftware;
 import org.usfirst.frc.team1389.robot.controls.ControlBoard;
 import org.usfirst.frc.team1389.systems.Elevator;
@@ -12,7 +10,6 @@ import com.team1389.system.Subsystem;
 import com.team1389.system.SystemManager;
 import com.team1389.system.drive.CurvatureDriveSystem;
 import com.team1389.util.ButtonEnumMap;
-//github.com/team1389/Liftzilla.git
 import com.team1389.watch.Watcher;
 
 public class TeleopMain {
@@ -33,7 +30,6 @@ public class TeleopMain {
 		manager = new SystemManager(elevator, driveSystem);
 		manager.init();
 		watcher.watch(elevator, driveSystem, robot.topSwitch, robot.bottomSwitch);
-		CompletableFuture.runAsync(Watcher::updateWatchers);
 		watcher.outputToDashboard();
 
 	}

@@ -4,39 +4,48 @@ package org.usfirst.frc.team1389.robot;
 import org.usfirst.frc.team1389.operation.TeleopMain;
 import org.usfirst.frc.team1389.watchers.DashboardInput;
 
+import com.team1389.auto.AutoModeBase;
 import com.team1389.auto.AutoModeExecuter;
+import com.team1389.watch.Watcher;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
+ * The VM is configured to automatically run this class, and to call the functions corresponding to
+ * each mode, as described in the IterativeRobot documentation. If you change the name of this class
+ * or the package after creating this project, you must also update the manifest file in the
+ * resource directory.
  */
 public class Robot extends IterativeRobot {
 	RobotSoftware robot;
 	TeleopMain teleOperator;
 	AutoModeExecuter autoModeExecuter;
-
+	Watcher broadWatcher;
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used for any
+	 * initialization code.
 	 */
 	@Override
 	public void robotInit() {
 		robot = RobotSoftware.getInstance();
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
+		DashboardInput.getInstance().init();
+		//robot.threadManager.init();
 	}
 
 	@Override
 	public void autonomousInit() {
+		//robot.threadManager.init();
 		autoModeExecuter.stop();
-		autoModeExecuter.setAutoMode(DashboardInput.getInstance().getSelectedAutonMode());
-		autoModeExecuter.start();
+		AutoModeBase selectedAutonMode = DashboardInput.getInstance().getSelectedAutonMode();
+		autoModeExecuter.setAutoMode(selectedAutonMode);
+		//robot.threadManager.borrowThreadToRun(autoModeExecuter::run);
+		broadWatcher = new Watcher();
+		broadWatcher.watch(selectedAutonMode);
+		broadWatcher.watch(robot.gyro.getYawInput().getWatchable("angle"));
+		broadWatcher.outputToDashboard();
 	}
 
 	/**
@@ -52,6 +61,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		//robot.threadManager.init();
 		autoModeExecuter.stop();
 		teleOperator.init();
 	}
