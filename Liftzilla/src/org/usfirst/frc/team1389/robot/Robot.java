@@ -32,16 +32,16 @@ public class Robot extends IterativeRobot {
 		teleOperator = new TeleopMain(robot);
 		autoModeExecuter = new AutoModeExecuter();
 		DashboardInput.getInstance().init();
-		//robot.threadManager.init();
+		robot.threadManager.init();
 	}
 
 	@Override
 	public void autonomousInit() {
-		//robot.threadManager.init();
+		robot.threadManager.init();
 		autoModeExecuter.stop();
 		AutoModeBase selectedAutonMode = DashboardInput.getInstance().getSelectedAutonMode();
 		autoModeExecuter.setAutoMode(selectedAutonMode);
-		//robot.threadManager.borrowThreadToRun(autoModeExecuter::run);
+		robot.threadManager.borrowThreadToRun(autoModeExecuter::run);
 		broadWatcher = new Watcher();
 		broadWatcher.watch(selectedAutonMode);
 		broadWatcher.watch(robot.gyro.getYawInput().getWatchable("angle"));
