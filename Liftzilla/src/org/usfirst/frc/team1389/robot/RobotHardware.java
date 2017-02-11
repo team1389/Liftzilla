@@ -1,14 +1,12 @@
 package org.usfirst.frc.team1389.robot;
 
-import com.team1389.hardware.inputs.hardware.NavXHardware;
+import com.team1389.hardware.inputs.hardware.GyroHardware;
 import com.team1389.hardware.inputs.hardware.PDPHardware;
 import com.team1389.hardware.inputs.hardware.SwitchHardware;
 import com.team1389.hardware.outputs.hardware.CANTalonGroup;
 import com.team1389.hardware.outputs.hardware.CANTalonHardware;
 import com.team1389.hardware.outputs.hardware.VictorHardware;
 import com.team1389.hardware.registry.Registry;
-
-import edu.wpi.first.wpilibj.SPI.Port;
 
 /**
  * responsible for initializing and storing hardware objects defined in {@link RobotLayout}
@@ -28,8 +26,7 @@ public class RobotHardware extends RobotLayout {
 		registry = new Registry();
 		pdp = new PDPHardware(registry);
 		System.out.println("initializing hardware");
-		gyro = new NavXHardware(Port.kMXP, registry);
-		gyro.zero();
+		gyro = new GyroHardware<>(GyroHardware.ADXRS_450, spi_GYRO, registry);
 		initDriveTrain();
 		initElevator();
 	}

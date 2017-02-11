@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
 		robot.threadManager.borrowThreadToRun(autoModeExecuter);
 		broadWatcher = new Watcher();
 		broadWatcher.watch(selectedAutonMode);
-		broadWatcher.watch(robot.gyro.getYawInput().getWatchable("angle"));
+		broadWatcher.watch(robot.gyro.getAngleInput().getWatchable("angle"));
 		broadWatcher.outputToDashboard();
 	}
 
@@ -58,9 +58,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 	}
+
 	@Override
-	public void disabledInit(){
+	public void disabledInit() {
 		robot.threadManager.reset();
+		robot.threadManager.borrowThreadToRun(robot.gyro::calibrate);
 	}
 
 	@Override

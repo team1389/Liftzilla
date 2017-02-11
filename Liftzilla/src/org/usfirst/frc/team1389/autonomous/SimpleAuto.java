@@ -19,7 +19,6 @@ public class SimpleAuto extends AutoModeBase {
 		this.robot = robot;
 		DriveOut<Percent> copy = robot.drive.copy().invert();
 		turnController = TurnAngleCommand.createTurnController(copy);
-
 	}
 
 	RangeOut<Percent> turnController;
@@ -27,8 +26,7 @@ public class SimpleAuto extends AutoModeBase {
 	@Override
 	protected void routine() throws AutoModeEndedException {
 		robot.gyro.reset();
-		robot.gyro.zero();
-		runCommand(new TurnAngleCommand<>(90, 1, robot.gyro.getYawInput(),
+		runCommand(new TurnAngleCommand<>(90, 1, robot.gyro.getAngleInput(),
 						turnController, new PIDConstants(0.005, 0, 0)));
 	}
 

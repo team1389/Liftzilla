@@ -3,6 +3,9 @@ package org.usfirst.frc.team1389.robot;
 import com.team1389.hardware.registry.port_types.CAN;
 import com.team1389.hardware.registry.port_types.DIO;
 import com.team1389.hardware.registry.port_types.PWM;
+import com.team1389.hardware.registry.port_types.SPIPort;
+
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name.
@@ -46,4 +49,5 @@ public class RobotMap {
 	protected static final boolean sinv_LEFT_ENCODER = true;
 	protected static final boolean sinv_RIGHT_ENCODER = false;
 	protected static final boolean sinv_ELEVATOR_ENCODER = true;
+	protected static final SPIPort spi_GYRO = new SPIPort(SPI.Port.kOnboardCS0);
 }
