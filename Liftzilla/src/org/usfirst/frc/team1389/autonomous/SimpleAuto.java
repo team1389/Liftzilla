@@ -5,7 +5,6 @@ import org.usfirst.frc.team1389.robot.RobotSoftware;
 import com.team1389.auto.AutoModeBase;
 import com.team1389.auto.AutoModeEndedException;
 import com.team1389.auto.command.TurnAngleCommand;
-import com.team1389.command_framework.CommandUtil;
 import com.team1389.configuration.PIDConstants;
 import com.team1389.hardware.outputs.software.RangeOut;
 import com.team1389.hardware.value_types.Percent;
@@ -18,8 +17,9 @@ public class SimpleAuto extends AutoModeBase {
 
 	public SimpleAuto(RobotSoftware robot) {
 		this.robot = robot;
-		DriveOut<Percent> copy = robot.drive.copy();
-		turnController = TurnAngleCommand.createTurnController(copy).invert();
+		DriveOut<Percent> copy = robot.drive.copy().invert();
+		turnController = TurnAngleCommand.createTurnController(copy);
+
 	}
 
 	RangeOut<Percent> turnController;
@@ -27,13 +27,14 @@ public class SimpleAuto extends AutoModeBase {
 	@Override
 	protected void routine() throws AutoModeEndedException {
 		robot.gyro.reset();
-		runCommand(new TurnAngleCommand<>(90, 1, robot.gyro.getYawInput().invert(),
+		robot.gyro.zero();
+		runCommand(new TurnAngleCommand<>(90, 1, robot.gyro.getYawInput(),
 						turnController, new PIDConstants(0.005, 0, 0)));
 	}
 
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
-	
+
 		return stem.put(turnController.getWatchable("lastSet"));
 	}
 

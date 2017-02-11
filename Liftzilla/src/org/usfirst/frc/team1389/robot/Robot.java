@@ -41,7 +41,7 @@ public class Robot extends IterativeRobot {
 		autoModeExecuter.stop();
 		AutoModeBase selectedAutonMode = DashboardInput.getInstance().getSelectedAutonMode();
 		autoModeExecuter.setAutoMode(selectedAutonMode);
-		robot.threadManager.borrowThreadToRun(autoModeExecuter::run);
+		robot.threadManager.borrowThreadToRun(autoModeExecuter);
 		broadWatcher = new Watcher();
 		broadWatcher.watch(selectedAutonMode);
 		broadWatcher.watch(robot.gyro.getYawInput().getWatchable("angle"));
@@ -58,10 +58,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 	}
+	@Override
+	public void disabledInit(){
+		robot.threadManager.reset();
+	}
 
 	@Override
 	public void teleopInit() {
-		//robot.threadManager.init();
+		robot.threadManager.init();
 		autoModeExecuter.stop();
 		teleOperator.init();
 	}
