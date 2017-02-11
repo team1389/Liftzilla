@@ -27,7 +27,7 @@ public class SimpleAuto extends AutoModeBase {
 	protected void routine() throws AutoModeEndedException {
 		robot.gyro.reset();
 		runCommand(new TurnAngleCommand<>(90, 1, robot.gyro.getAngleInput(),
-						turnController, new PIDConstants(0.005, 0, 0)));
+						turnController, new PIDConstants(0.01, .0001, .08)));
 	}
 
 	@Override
