@@ -9,6 +9,7 @@ import com.team1389.auto.AutoModeExecuter;
 import com.team1389.watch.Watcher;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -46,6 +47,7 @@ public class Robot extends IterativeRobot {
 		broadWatcher.watch(selectedAutonMode);
 		broadWatcher.watch(robot.gyro.getAngleInput().getWatchable("angle"));
 		broadWatcher.outputToDashboard();
+		new Waypoint(0,0,0);
 	}
 
 	/**

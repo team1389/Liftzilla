@@ -28,7 +28,6 @@ public class Elevator extends Subsystem {
 	private SmoothSetController smoothSetController;
 	private double elevatorPositionSetpoint;
 	private double topPos, botPos;
-
 	public Elevator(PercentOut elevatorVoltage, RangeIn<Speed> elevatorSpeed, RangeIn<Position> elevatorPos,
 			DigitalIn top, DigitalIn bottom, DigitalIn zero, ButtonEnumMap<Height> heightmap) {
 		PercentOut voltage = elevatorVoltage.copy().offset(.15);
