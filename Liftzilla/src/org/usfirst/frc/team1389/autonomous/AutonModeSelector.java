@@ -8,7 +8,9 @@ public class AutonModeSelector {
 	public static AutoModeBase createAutoMode(AutonOption autonOption) {
 		switch (autonOption) {
 		case DRIVE_STRAIGHT:
-			return new SimpleAuto(RobotSoftware.getInstance());
+			return new AutoDropOffGear(RobotSoftware.getInstance());
+		case TEST_SENSORS:
+			return new SensorDisplayAuto(RobotSoftware.getInstance());
 		default:
 			System.out.println("ERROR: unexpected auto mode: " + autonOption);
 			return null;

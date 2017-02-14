@@ -47,6 +47,8 @@ public class Robot extends IterativeRobot {
 		broadWatcher = new Watcher();
 		broadWatcher.watch(selectedAutonMode);
 		broadWatcher.watch(robot.gyro.getAngleInput().getWatchable("angle"));
+		broadWatcher.watch(robot.leftA.getPositionInput().getWatchable("pos"));
+
 		broadWatcher.outputToDashboard();
 		new Waypoint(0, 0, 0);
 	}

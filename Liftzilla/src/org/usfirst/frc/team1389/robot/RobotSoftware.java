@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1389.robot;
 
 import com.team1389.concurrent.OhmThreadService;
+import com.team1389.hardware.inputs.software.PositionEncoderIn;
 import com.team1389.hardware.inputs.software.RangeIn;
 import com.team1389.hardware.outputs.software.PercentOut;
 import com.team1389.hardware.value_types.Percent;
@@ -35,8 +36,7 @@ public class RobotSoftware extends RobotHardware {
 	}
 
 	public RobotSoftware() {
-		// angle = navX.getYawInput();
-		// state = setupRobotStateEstimator();
+		PositionEncoderIn.setGlobalWheelDiameter(RobotConstants.WheelDiameter);
 	}
 
 }

@@ -1,11 +1,11 @@
 package org.usfirst.frc.team1389.autonomous;
+
 public enum AutonOption {
-    DRIVE_STRAIGHT("Drive Stright"); //
+	DRIVE_STRAIGHT("Drive Stright"), TEST_SENSORS("Test Sensors");
 
+	public final String name;
 
-    public final String name;
-
-    AutonOption(String name) {
-        this.name = name;
-    }
+	AutonOption(String name) {
+		this.name = name;
+	}
 }
