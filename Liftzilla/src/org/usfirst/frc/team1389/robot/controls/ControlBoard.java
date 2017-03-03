@@ -31,8 +31,8 @@ public class ControlBoard extends ControlMap {
 	public DigitalIn quickTurn = driveController.getButton(btn_QUICK_TURN);
 
 	// MANIPULATOR CONTROLS
-	public DigitalIn elevatorDown = manipController.getButton(btn_ELEVATOR_DOWN).getLatched();
-	public DigitalIn elevatorOne = manipController.getButton(btn_ELEVATOR_ONE).getLatched();
-	public DigitalIn elevatorTwo = manipController.getButton(btn_ELEVATOR_TWO).getLatched();
-	public DigitalIn elevatorZero = manipController.getButton(btn_ELEVATOR_ZERO).getLatched();
+	public DigitalIn elevatorDown = manipController.getButton(btn_ELEVATOR_DOWN).latched();
+	public DigitalIn elevatorOne = manipController.getButton(btn_ELEVATOR_ONE).latched();
+	public DigitalIn elevatorTwo = manipController.getButton(btn_ELEVATOR_TWO).latched();
+	public DigitalIn elevatorZero = manipController.getButton(btn_ELEVATOR_ZERO).latched();
 }
