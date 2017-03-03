@@ -36,6 +36,7 @@ public class TeleopMain {
 
 	public void periodic() {
 		manager.update();
+		Watcher.update();
 	}
 
 	public Subsystem setUpDriveSystem() {
