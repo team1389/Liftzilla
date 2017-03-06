@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1389.robot;
 
 import com.team1389.concurrent.OhmThreadService;
+import com.team1389.hardware.inputs.software.AngleIn;
 import com.team1389.hardware.inputs.software.PositionEncoderIn;
 import com.team1389.hardware.inputs.software.RangeIn;
 import com.team1389.hardware.outputs.software.PercentOut;
@@ -17,6 +18,7 @@ public class RobotSoftware extends RobotHardware {
 	public final RangeIn<Speed> elevatorSpeedIn = rightB.getSpeedInput();
 	public final PercentOut elevatorVoltage = elevatorA.getVoltageOutput().addFollowers(elevatorB.getVoltageOutput().invert());
 	public final OhmThreadService threadManager = new OhmThreadService(4);
+	public final AngleIn<Position> robotAngle = gyro.getAngleInput();
 	// public AngleIn<Position> angle;
 	// public RobotStateEstimator state;
 

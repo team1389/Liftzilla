@@ -7,6 +7,7 @@ import com.team1389.hardware.value_types.Value;
 import com.team1389.system.Subsystem;
 import com.team1389.util.list.AddList;
 import com.team1389.watch.Watchable;
+import com.team1389.watch.info.BooleanInfo;
 
 public class FailureMonitor extends Subsystem{
 PDPHardware pdp;
@@ -18,7 +19,7 @@ RangeIn <Value> canL, canL2, canR, canR2, elevatorL, elevatorR;
 	}
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
-		return null;
+		return stem.put(new BooleanInfo("drive-train-state", ()->throttle.get()==0 && (canL.get()>0 || canL2.get()>0 || canR.get()>0 || canR2.get()>0)));
 	}
 
 	@Override
@@ -36,7 +37,8 @@ RangeIn <Value> canL, canL2, canR, canR2, elevatorL, elevatorR;
 
 	@Override
 	public void update() {
-		if(throttle.get)
+			
+		
 	}
 
 }

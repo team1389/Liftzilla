@@ -1,4 +1,4 @@
-
+ 
 package org.usfirst.frc.team1389.robot;
 
 import org.usfirst.frc.team1389.operation.TeleopMain;
@@ -8,6 +8,8 @@ import com.team1389.auto.AutoModeBase;
 import com.team1389.auto.AutoModeExecuter;
 import com.team1389.watch.Watcher;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import jaci.pathfinder.Waypoint;
 
@@ -32,9 +34,12 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		robot = RobotSoftware.getInstance();
 		teleOperator = new TeleopMain(robot);
+		//new NumberInput("voltage-setter", 0, (d)->robot.drive.set(new DriveSignal(d,d)));
 		autoModeExecuter = new AutoModeExecuter();
 		DashboardInput.getInstance().init();
 		robot.threadManager.init();
+		UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture("Camera1", 0);
+		cam1.setResolution(1280, 720);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.usfirst.frc.team1389.robot.RobotSoftware;
 import org.usfirst.frc.team1389.robot.controls.ControlBoard;
 import org.usfirst.frc.team1389.systems.Elevator;
 import org.usfirst.frc.team1389.systems.Elevator.Height;
+import org.usfirst.frc.team1389.systems.FailureMonitor;
 
 import com.team1389.hardware.inputs.software.DigitalIn;
 import com.team1389.system.Subsystem;
@@ -27,9 +28,10 @@ public class TeleopMain {
 		controls = ControlBoard.getInstance();
 		Subsystem driveSystem = setUpDriveSystem();
 		Subsystem elevator = setupComplexElevator();
-		manager = new SystemManager(elevator, driveSystem);
+		Subsystem failureMonitor = setUpFailureMonitorSystem();
+		manager = new SystemManager(elevator, driveSystem, failureMonitor);
 		manager.init();
-		watcher.watch(elevator, driveSystem, robot.topSwitch, robot.bottomSwitch);
+		watcher.watch(elevator, driveSystem, robot.topSwitch, robot.bottomSwitch, robot.robotAngle.getWatchable("gyro-position"));
 		watcher.outputToDashboard();
 
 	}
@@ -38,7 +40,9 @@ public class TeleopMain {
 		manager.update();
 		Watcher.update();
 	}
-
+	private Subsystem setUpFailureMonitorSystem(){
+		return new FailureMonitor(robot.pdp, controls.throttle);
+	}
 	public Subsystem setUpDriveSystem() {
 		return new CurvatureDriveSystem(robot.drive, controls.throttle, controls.wheel, controls.quickTurn);
 	}
