@@ -18,7 +18,7 @@ public class TeleopMain {
 	ControlBoard controls;
 	RobotSoftware robot;
 	Watcher watcher;
-
+	public DigitalIn timeRunning;
 	public TeleopMain(RobotSoftware robot) {
 		this.robot = robot;
 	}
@@ -29,20 +29,28 @@ public class TeleopMain {
 		Subsystem driveSystem = setUpDriveSystem();
 		Subsystem elevator = setupComplexElevator();
 		Subsystem failureMonitor = setUpFailureMonitorSystem();
+		timeRunning = new DigitalIn(()->false);
 		manager = new SystemManager(elevator, driveSystem, failureMonitor);
 		manager.init();
-		watcher.watch(elevator, driveSystem, robot.topSwitch, robot.bottomSwitch, robot.robotAngle.getWatchable("gyro-position"));
+		watcher.watch(elevator, driveSystem, robot.topSwitch, robot.bottomSwitch,
+				robot.robotAngle.getWatchable("gyro-position"), controls.test.getWatchable("climber-state"),
+				timeRunning.getWatchable("time_running"));
+
 		watcher.outputToDashboard();
+		
 
 	}
 
 	public void periodic() {
 		manager.update();
+		timeRunning.invert();
 		Watcher.update();
 	}
-	private Subsystem setUpFailureMonitorSystem(){
+
+	private Subsystem setUpFailureMonitorSystem() {
 		return new FailureMonitor(robot.pdp, controls.throttle);
 	}
+
 	public Subsystem setUpDriveSystem() {
 		return new CurvatureDriveSystem(robot.drive, controls.throttle, controls.wheel, controls.quickTurn);
 	}

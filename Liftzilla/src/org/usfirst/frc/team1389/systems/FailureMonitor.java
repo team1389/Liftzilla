@@ -19,7 +19,7 @@ RangeIn <Value> canL, canL2, canR, canR2, elevatorL, elevatorR;
 	}
 	@Override
 	public AddList<Watchable> getSubWatchables(AddList<Watchable> stem) {
-		return stem.put(new BooleanInfo("drive-train-state", ()->throttle.get()==0 && (canL.get()>0 || canL2.get()>0 || canR.get()>0 || canR2.get()>0)));
+		return stem.put(new BooleanInfo("drive-train-state", ()->throttle.get()==0 && (canL.get()>0 || canL2.get()>0 || canR.get()>0 || canR2.get()>0)), canL.getWatchable("left-motor-current"), canL2.getWatchable("left-two-motor-current"), canR.getWatchable("right-motor-current"), canR2.getWatchable("right-two-motor-current"));
 	}
 
 	@Override
