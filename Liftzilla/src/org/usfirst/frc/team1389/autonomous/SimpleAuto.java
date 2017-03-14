@@ -43,7 +43,7 @@ public class SimpleAuto extends AutoModeBase {
 	}
 
 	@Override
-	public String getName() {
+	public String getIdentifier() {
 		return "Simple auto";
 	}
 

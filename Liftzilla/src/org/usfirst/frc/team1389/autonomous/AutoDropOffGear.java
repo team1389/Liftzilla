@@ -47,7 +47,7 @@ public class AutoDropOffGear extends AutoModeBase {
 	}
 
 	@Override
-	public String getName() {
+	public String getIdentifier() {
 		return null;
 	}
 

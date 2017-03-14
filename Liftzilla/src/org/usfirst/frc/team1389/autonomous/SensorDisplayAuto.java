@@ -20,7 +20,7 @@ public class SensorDisplayAuto extends AutoModeBase {
 	}
 
 	@Override
-	public String getName() {
+	public String getIdentifier() {
 		return "testAuto";
 	}
 
